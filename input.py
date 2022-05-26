@@ -98,6 +98,15 @@ class DSenseTello:
     def onGroundAndNoInput(self):
         self.dsense.light.setColorI(255,0,0)
 
+    def condition_throw_and_go(self):
+        return self.dsense.state.L1 and self.dsense.state.DpadUp
+
+    def condition_palm_land(self):
+        return self.dsense.state.DpadDown
+
+    def condition_demo(self):
+        return self.dsense.state.R3 and self.dsense.state.L3
+
     def batteryLevelIndicator(self, batteryLevel):
         if(batteryLevel > 80): self.dsense.light.setPlayerID(PlayerID.player4)
         elif(batteryLevel > 60): self.dsense.light.setPlayerID(PlayerID.player3)
@@ -112,7 +121,7 @@ class DSenseTello:
         self.dsense.triggerR.setForce(1, trgForce)
         self.dsense.triggerL.setForce(0, trgForcePoint)
         self.dsense.triggerL.setForce(1, trgForce)
-        print("baterry: "+str(battery)+" force: "+str(trgForce)+" Force point: "+str(trgForcePoint))
+        #print("baterry: "+str(battery)+" force: "+str(trgForce)+" Force point: "+str(trgForcePoint))
 
     def close(self):
         self.dsense.light.setColorI(0,0,255)

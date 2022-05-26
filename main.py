@@ -10,7 +10,7 @@ except ImportError:
 	import os
 	DEVNULL = open(os.devnull, 'wb')
 
-from dsense_tello import DSenseTello
+from input import DSenseTello
 from pydualsense import *
 
 from tello.tello import Tello
@@ -30,8 +30,9 @@ def main():
 	telloTookOff=False
 	streamingOn=False
 	try:
-		tello.send_command("command")
-  
+		while not tello.send_command("command",3):
+			sleep(1)
+
 		while True:
 			#-------# mainloop
 			if( dsTello.conditionArm() and not telloTookOff ): # takeoff procedure

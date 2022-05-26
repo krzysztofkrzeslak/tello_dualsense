@@ -55,8 +55,9 @@ class Tello:
                 print('Response timeout exceeded... command %s' % command)
                 # TODO: is timeout considered failure or next command still get executed
                 # now, next one got executed
-                return
+                return False
         print('Done!!! sent command: %s to %s' % (command, self.tello_ip))
+        return True
 
     def _cmd_ack_receive_thread(self):
         """Listen to responses from the Tello.
@@ -79,7 +80,12 @@ class Tello:
             r = ((r.decode('utf-8')).strip()).rstrip(";")
             tmp = r.split(';')
             status = dict(s.split(':') for s in tmp)
-            for k in status: self.status[k]=float(status[k])
+            for k in status:
+                try:
+                    self.status[k]=float(status[k])
+                except Exception as e:
+                    if isinstance(e, ValueError):
+                        pass ##todo mpry split implementation
             #print(str(self.status))
             time.sleep(0.05)
 
